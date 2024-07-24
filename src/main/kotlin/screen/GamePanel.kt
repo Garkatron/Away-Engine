@@ -44,22 +44,23 @@ class GamePanel (val fps: Int, val gameLogic: GameLogic) : JPanel(), Runnable {
 
     override fun paintComponent(g: Graphics) {
         super.paintComponent(g)
-        render(g)
+        val g2 = g as Graphics2D
+        clear(g2) // Asegúrate de limpiar el fondo antes de dibujar
+        render(g2)
     }
 
-    private fun render(g: Graphics) {
-        val g2 = g as Graphics2D
-        clear(g2)
+    private fun render(g2: Graphics2D) {
         for (entity in gameLogic.gameObjectsList) {
             val entityPosComponent = entity.componentManager.getComponentByName("positionComponent") as PositionComponent
-            val pos = entityPosComponent.getPosition()
-            g2.fillRect(pos.x.toInt(), pos.y.toInt(), 22,22)  // Llena el fondo con el color blanco
+            val pos = entityPosComponent.position
+            g2.color = Color.white // Establecer color de dibujo
+            g2.fillRect(pos.x.toInt(), pos.y.toInt(), 22, 22) // Dibujar el objeto
         }
-        g2.dispose()
     }
 
     private fun clear(g2: Graphics2D) {
-        g2.color = Color.white
+        g2.color = Color.black // Establecer color de fondo
+        g2.fillRect(0, 0, width, height) // Limpiar el área completa del panel
     }
 
     fun addKeyboardListener(k: KeyboardListener) {
@@ -71,23 +72,39 @@ class GamePanel (val fps: Int, val gameLogic: GameLogic) : JPanel(), Runnable {
 
     override fun run() {
         // Calcular el intervalo de dibujo en nanosegundos
-        val drawInterval = 1_000_000_000L / fps
+        val drawInterval = 1_000_000_000L / fps // Intervalo de dibujo basado en FPS
+        val updateInterval = 1_000_000_000L / 60 // Intervalo de actualización basado en 60 actualizaciones por segundo
         var nextDrawTime = System.nanoTime()
+        var nextUpdateTime = System.nanoTime()
+        var lastUpdateTime = System.nanoTime()
 
         while (running) {
             try {
-                repaint()
-
                 val now = System.nanoTime()
-                var remainingTime = nextDrawTime - now
 
+                // Calcular deltaTime
+                val deltaTime: Float =
+                    ((now - lastUpdateTime) / 1_000_000_000.0 ).toFloat()// Convertir nanosegundos a segundos
+
+                // Actualizar la lógica del juego si ha pasado el intervalo de actualización
+                if (now - nextUpdateTime >= updateInterval) {
+                    gameLogic.update(deltaTime) // Llama al método de actualización de la lógica del juego con deltaTime
+                    nextUpdateTime += updateInterval
+                    lastUpdateTime = now
+                }
+
+                // Renderizar si ha pasado el intervalo de dibujo
+                if (now - nextDrawTime >= drawInterval) {
+                    repaint() // Solicitar repaint del panel
+                    nextDrawTime += drawInterval
+                }
+
+                // Controlar el tiempo de espera para mantener el ciclo en equilibrio
+                var remainingTime = nextDrawTime - System.nanoTime()
                 if (remainingTime < 0) {
                     remainingTime = 0
                 }
-
                 Thread.sleep(remainingTime / 1_000_000L) // Convertir nanosegundos a milisegundos
-
-                nextDrawTime += drawInterval
 
             } catch (e: InterruptedException) {
                 Thread.currentThread().interrupt()

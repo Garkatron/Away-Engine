@@ -1,6 +1,6 @@
 package core.maths
 
-data class Vector2(val x: Float, val y: Float) {
+data class Vector2(var x: Float, var y: Float) {
 
     // Adds two vectors
     operator fun plus(other: Vector2): Vector2 {
@@ -50,5 +50,10 @@ data class Vector2(val x: Float, val y: Float) {
     // Provides a string representation of the vector
     override fun toString(): String {
         return "Vector2(x=$x, y=$y)"
+    }
+
+    // Returns the length of the vector (same as magnitude)
+    fun length(): Float {
+        return magnitude()
     }
 }

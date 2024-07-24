@@ -13,7 +13,5 @@ fun main() {
     myScreen.add(gamePanel)
     gamePanel.addKeyboardListener(keyboardListener)
     myScreen.show()
-
-    gameLogic.start()
     gamePanel.start()
 }

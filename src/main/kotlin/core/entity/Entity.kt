@@ -4,7 +4,7 @@ import core.GameObject
 import core.component.ComponentManager
 import core.signal.Signal
 
-class Entity : GameObject() {
+open class Entity : GameObject() {
     val onDead = Signal<Unit>()
     val onHurt = Signal<Unit>()
     val isDead: Boolean = false
