@@ -1,5 +1,8 @@
 import components.PositionComponent
+import components.SpriteComponent
 import core.GameLogic
+import core.GameObject
+import core.component.Component
 import core.controller.KeyboardListener
 import core.entity.Entity
 import java.awt.Color
@@ -12,7 +15,7 @@ class GamePanel (val fps: Int, val gameLogic: GameLogic) : JPanel(), Runnable {
     companion object {
         private const val TILE_SIZE: Int = 16
         private const val SCALE_FACTOR: Int = 3
-        private const val RENDER_TILE_SIZE: Int = TILE_SIZE * SCALE_FACTOR
+        const val RENDER_TILE_SIZE: Int = TILE_SIZE * SCALE_FACTOR
         private const val MAX_SCREEN_COL = 16
         private const val MAX_SCREEN_ROW = 16
         private const val SCREEN_WIDTH = RENDER_TILE_SIZE * MAX_SCREEN_COL
@@ -51,10 +54,11 @@ class GamePanel (val fps: Int, val gameLogic: GameLogic) : JPanel(), Runnable {
 
     private fun render(g2: Graphics2D) {
         for (entity in gameLogic.gameObjectsList) {
-            val entityPosComponent = entity.componentManager.getComponentByName("positionComponent") as PositionComponent
-            val pos = entityPosComponent.position
-            g2.color = Color.white // Establecer color de dibujo
-            g2.fillRect(pos.x.toInt(), pos.y.toInt(), 22, 22) // Dibujar el objeto
+            var spriteComponent: SpriteComponent? = entity.componentManager.getComponentByName("spriteComponent") as SpriteComponent
+            spriteComponent.let {
+                it?.draw(g2)
+            }
+
         }
     }
 

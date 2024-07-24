@@ -7,7 +7,7 @@ import core.maths.Vector2
 import entities.PlayerEntity
 import java.awt.event.KeyListener
 
-class GameLogic (val fps: Int, keyboardListener: KeyboardListener) {
+class GameLogic (keyboardListener: KeyboardListener) {
 
     private var running: Boolean = false
 
