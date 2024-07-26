@@ -1,4 +1,4 @@
-package core.signal
+package core.engine.signal
 
 class Signal<T> {
     private val listeners = mutableListOf<(T) -> Unit>()

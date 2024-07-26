@@ -1,4 +1,4 @@
-package core.interfaces
+package core.engine.interfaces
 
 import java.awt.Graphics2D
 

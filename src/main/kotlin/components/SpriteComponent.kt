@@ -2,13 +2,12 @@ package components
 
 import GamePanel.Companion.RENDER_TILE_SIZE
 import core.GameObject
-import core.interfaces.IDrawable
-import core.component.Component
-import core.image.Sprite
-import java.awt.Color
+import core.engine.interfaces.IDrawable
+import core.engine.component.Component
+import core.engine.image.Sprite
 import java.awt.Graphics2D
 
-class SpriteComponent(name: String, path: String) : Component<GameObject>(name), IDrawable {
+open class SpriteComponent(name: String, path: String) : Component<GameObject>(name), IDrawable {
 
     val sprite: Sprite = Sprite(path)
 

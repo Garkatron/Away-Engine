@@ -1,6 +1,6 @@
-package core.controller
+package core.engine.controller
 
-import core.signal.Signal
+import core.engine.signal.Signal
 import java.awt.event.KeyEvent
 import java.awt.event.KeyListener
 

@@ -1,4 +1,4 @@
-package core.image
+package core.engine.image
 
 import java.awt.image.BufferedImage
 import javax.imageio.ImageIO

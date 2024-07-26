@@ -1,8 +1,5 @@
-import components.PositionComponent
 import core.GameLogic
-import core.controller.KeyboardListener
-import core.entity.Entity
-import core.maths.Vector2
+import core.engine.controller.KeyboardListener
 import screen.Window
 
 fun main() {

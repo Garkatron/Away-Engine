@@ -1,6 +1,5 @@
 package screen
 
-import core.controller.KeyboardListener
 import java.awt.Component
 import javax.swing.JFrame
 

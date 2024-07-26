@@ -1,10 +1,6 @@
-import components.PositionComponent
-import components.SpriteComponent
 import core.GameLogic
-import core.GameObject
-import core.component.Component
-import core.controller.KeyboardListener
-import core.entity.Entity
+import core.engine.controller.KeyboardListener
+import core.engine.interfaces.IDrawable
 import java.awt.Color
 import javax.swing.JPanel
 import java.awt.Dimension
@@ -54,13 +50,23 @@ class GamePanel (val fps: Int, val gameLogic: GameLogic) : JPanel(), Runnable {
 
     private fun render(g2: Graphics2D) {
         for (entity in gameLogic.gameObjectsList) {
-            var spriteComponent: SpriteComponent? = entity.componentManager.getComponentByName("spriteComponent") as SpriteComponent
-            spriteComponent.let {
-                it?.draw(g2)
-            }
+            val renderable = entity.componentManager.getComponentByName("spriteComponent") as? IDrawable
 
+            if (renderable == null) {
+                val animatedRenderable = entity.componentManager.getComponentByName("animatedSpriteComponent") as? IDrawable
+
+                if (animatedRenderable == null) {
+                    println("Warning: Both SpriteComponent and AnimatedSpriteComponent are null for entity") // Asumiendo que entity tiene un id o algún identificador
+                } else {
+                    animatedRenderable.draw(g2)
+                }
+            } else {
+                renderable.draw(g2)
+            }
         }
     }
+
+
 
     private fun clear(g2: Graphics2D) {
         g2.color = Color.black // Establecer color de fondo

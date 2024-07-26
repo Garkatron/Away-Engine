@@ -1,4 +1,4 @@
-package core.component
+package core.engine.component
 
 import core.GameObject
 

@@ -1,8 +1,8 @@
 package components
 
 import core.GameObject
-import core.component.Component
-import core.maths.Vector2
+import core.engine.component.Component
+import core.engine.maths.Vector2
 
 class PositionComponent(initialPos: Vector2, name: String) : Component<GameObject>(name) {
 

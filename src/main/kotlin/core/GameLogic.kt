@@ -1,11 +1,7 @@
 package core
 
-import components.PositionComponent
-import core.controller.KeyboardListener
-import core.entity.Entity
-import core.maths.Vector2
+import core.engine.controller.KeyboardListener
 import entities.PlayerEntity
-import java.awt.event.KeyListener
 
 class GameLogic (keyboardListener: KeyboardListener) {
 

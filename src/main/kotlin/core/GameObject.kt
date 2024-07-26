@@ -1,6 +1,6 @@
 package core
 
-import core.component.ComponentManager
+import core.engine.component.ComponentManager
 
 abstract class GameObject {
     val componentManager = ComponentManager(this)

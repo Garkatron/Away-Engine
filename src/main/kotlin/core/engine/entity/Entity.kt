@@ -1,8 +1,7 @@
-package core.entity
+package core.engine.entity
 
 import core.GameObject
-import core.component.ComponentManager
-import core.signal.Signal
+import core.engine.signal.Signal
 
 open class Entity : GameObject() {
     val onDead = Signal<Unit>()
