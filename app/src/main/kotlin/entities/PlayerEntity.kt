@@ -8,10 +8,15 @@ import core.engine.media.SourceLoader
 import core.engine.media.SpriteSplitter
 import core.engine.maths.Vector2
 import core.engine.maths.Vector2i
+import core.media.audio.WAVPlayer
 
 class PlayerEntity(keyboardListener: KeyboardListener) : Entity() {
 
     private val playerImage = SourceLoader.loadImageResource("/assets/player/player.png")
+    private val walkSound = SourceLoader.loadWAVFromInputStream(this::class.java.getResourceAsStream("/assets/player/sfx/on_step/16_human_walk_stone_1.wav"),1f)
+        ?.let { WAVPlayer(it) }?.apply {
+            loop = true
+        }
 
     // Componentes del jugador
     private val positionComponent = PositionComponent(Vector2(0f, 0f), "positionComponent")
@@ -44,7 +49,6 @@ class PlayerEntity(keyboardListener: KeyboardListener) : Entity() {
     private val playerAnimations = ImageAnimations(isLoop = true, animationSpeed = 0.15f).apply {
 
         if (playerImage != null) {
-            // Función auxiliar para añadir animaciones
             fun addDirectionAnimations(anim: String, startY: Int, columns: Int) {
                 val directions = listOf(
                     "DOWN",
@@ -58,7 +62,6 @@ class PlayerEntity(keyboardListener: KeyboardListener) : Entity() {
                 )
                 directions.forEachIndexed { index, name ->
                     val animationName = "$anim$name"
-                    println(animationName)
                     // Crear la lista de Vector2i
                     val vectorList = List(columns) { col ->
                         Vector2i(col, startY + index)
@@ -85,10 +88,9 @@ class PlayerEntity(keyboardListener: KeyboardListener) : Entity() {
         }
     }
 
-
     private val animatedSpriteComponent = AnimatedSpriteComponent(
         name = "animatedSpriteComponent",
-        defaultAnimation = "WALK_DOWN",
+        defaultAnimation = "IDLE_DOWN",
         imageAnimations = playerAnimations
     )
 
@@ -101,13 +103,18 @@ class PlayerEntity(keyboardListener: KeyboardListener) : Entity() {
             addComponent(stateMachineComponent)
         }
 
-        stateMachineComponent.onStateChange.connect {
-            currentState ->
+        stateMachineComponent.onStateChange.connect { currentState ->
             animatedSpriteComponent.animate(currentState)
-            println(currentState)
+
         }
 
-
+        animatedSpriteComponent.animatedSprite.onFinished.connect {
+                anim ->
+            if (anim.contains("WALK")) {
+                walkSound?.stop()
+                walkSound?.play()
+            }
+        }
     }
 
 }

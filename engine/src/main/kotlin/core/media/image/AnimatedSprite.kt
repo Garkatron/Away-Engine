@@ -9,11 +9,12 @@ class AnimatedSprite(
 ) {
 
     var animSpeed: Float = imageAnimations.animationSpeed
-    private var currentAnimation: String = defaultAnimation
+    var currentAnimation: String = defaultAnimation
     private var currentSpriteIndex: Float = 0f
     var currentImage: BufferedImage? = null
     var isAnimating: Boolean = false
-    var finished: Signal<Unit> = Signal<Unit>()
+    var onFinished = Signal<String>()
+    var onStart = Signal<String>()
 
     init {
         if (imageAnimations.getAnimation(defaultAnimation).isNullOrEmpty()) {
@@ -33,6 +34,7 @@ class AnimatedSprite(
 
     fun animate() {
         isAnimating = true
+        onStart.emit(currentAnimation)
     }
 
     fun update() {
@@ -44,10 +46,12 @@ class AnimatedSprite(
             if (currentSpriteIndex >= frames.size) {
                 if (imageAnimations.isLoop) {
                     currentSpriteIndex = 0f
+                    onFinished.emit(currentAnimation)
+
                 } else {
                     currentSpriteIndex = (frames.size - 1).toFloat()
                     isAnimating = false
-                    finished.emit(Unit)
+                    onFinished.emit(currentAnimation)
                 }
             }
 

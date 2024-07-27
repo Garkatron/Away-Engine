@@ -14,7 +14,7 @@ data class ImageAnimations(
         val images = mutableListOf<BufferedImage>()
         for (path in paths) {
             try {
-                val image = SourceLoader.loadImage(path) ?: throw IOException("Failed to read image from path '$path'.")
+                val image = SourceLoader.loadImageResource(path) ?: throw IOException("Failed to read image from path '$path'.")
                 images.add(image)
             } catch (e: IOException) {
                 println("Error loading image '$path': ${e.message}")

@@ -1,8 +1,12 @@
 package core
 
 import core.engine.controller.KeyboardListener
+import core.engine.media.SourceLoader
 import core.engine.`object`.GameObject
+import core.media.audio.WAVPlayer
 import entities.PlayerEntity
+import java.nio.file.Paths
+import javax.naming.ldap.SortKey
 
 class GameLogic (keyboardListener: KeyboardListener) {
 
@@ -13,19 +17,6 @@ class GameLogic (keyboardListener: KeyboardListener) {
     val gameObjectsList: ArrayList<GameObject> = arrayListOf(
         player
     )
-
-
-//    fun start() {
-//        if (!running) {
-//            running = true
-//            val thread = Thread(this)
-//            thread.start()
-//        }
-//    }
-
-    fun stop() {
-        running = false
-    }
 
 
     fun update(dt: Float) {

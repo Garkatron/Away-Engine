@@ -11,7 +11,7 @@ import java.awt.Graphics2D
 class AnimatedSpriteComponent(name: String, imageAnimations: ImageAnimations, defaultAnimation: String) : Component<GameObject>(name),
     IDrawable {
 
-    private var animatedSprite: AnimatedSprite = AnimatedSprite(imageAnimations, defaultAnimation)
+    var animatedSprite: AnimatedSprite = AnimatedSprite(imageAnimations, defaultAnimation)
 
     fun animate(key: String) {
         animatedSprite.setAnimation(key)
