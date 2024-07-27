@@ -1,6 +1,9 @@
 package core.media.audio
 
 import core.engine.signal.Signal
+import java.io.InputStream
+import java.nio.file.Path
+import javax.sound.sampled.Clip
 
 abstract class AudioPlayer {
 
@@ -29,6 +32,10 @@ abstract class AudioPlayer {
     }
 
     open fun loop(boolean: Boolean, times: Int) {
+    }
+
+    open fun change(newClip: Clip) {
+
     }
 
 }

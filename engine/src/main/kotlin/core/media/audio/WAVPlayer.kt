@@ -3,7 +3,7 @@ package core.media.audio
 import java.io.InputStream
 import javax.sound.sampled.*
 
-class WAVPlayer(private val clip: Clip) : AudioPlayer() {
+class WAVPlayer(private var clip: Clip) : AudioPlayer() {
 
     init {
         clip.addLineListener { event ->
@@ -38,5 +38,11 @@ class WAVPlayer(private val clip: Clip) : AudioPlayer() {
         println("Clip stopped.")
     }
 
+    override fun change(newClip: Clip) {
+        if (clip.isRunning) {
+            stop()
+        }
+        clip = newClip
+    }
 
 }

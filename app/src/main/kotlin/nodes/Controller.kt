@@ -1,17 +1,16 @@
-package components
+package nodes
 
-import core.engine.`object`.GameObject
-import core.engine.component.Component
 import core.engine.controller.KeyboardListener
 import core.engine.maths.Vector2
+import core.systems.node.Node
+import core.systems.node.Node2D
 import java.awt.event.KeyEvent
 
-class ControllerComponent(
+class Controller (
     keyboardListener: KeyboardListener,
-    private val positionComponent: PositionComponent,
-    private val stateMachineComponent: StateMachineComponent,
-    name: String
-) : Component<GameObject>(name) {
+    private val stateMachine: StateMachine,
+    name: String ="Controller"
+) : Node() {
 
     val keysPressed = mutableSetOf<Int>()
 
@@ -39,7 +38,7 @@ class ControllerComponent(
 
     private fun handleKeyRelease(keyCode: Int) {
         if (keysPressed.isEmpty()) {
-            stateMachineComponent.changeState("IDLE_"+stateMachineComponent.getCurrentState().substringAfter("_"))
+            stateMachine.changeState("IDLE_"+stateMachine.getCurrentState().substringAfter("_"))
         }
     }
 
@@ -61,7 +60,7 @@ class ControllerComponent(
 
         val baseState = if (pressedDirections.isNotEmpty()) "WALK_${pressedDirections.joinToString("_")}" else "IDLE"
 
-        stateMachineComponent.changeState(baseState)
+        stateMachine.changeState(baseState)
 
         movementVector.set(
             when {
@@ -82,7 +81,7 @@ class ControllerComponent(
             movementVector.normalize()
         }
 
-        positionComponent.position += movementVector
+        (parent as Node2D).position += movementVector
     }
 
 

@@ -1,6 +1,8 @@
-package core.engine.maths
+package core.maths
 
-data class Vector2(var x: Float, var y: Float) {
+import core.engine.maths.Vector2
+
+data class Vector2i(var x: Int, var y: Int) {
 
     // Adds two vectors
     operator fun plus(other: Vector2): Vector2 {
@@ -34,7 +36,7 @@ data class Vector2(var x: Float, var y: Float) {
     }
 
     // Normalizes the vector (makes it unit length)
-    fun normalize(): Vector2 {
+    fun normalize(): Any {
         val mag = magnitude()
         return if (mag != 0f) this / mag else this
     }
@@ -55,10 +57,5 @@ data class Vector2(var x: Float, var y: Float) {
     // Returns the length of the vector (same as magnitude)
     fun length(): Float {
         return magnitude()
-    }
-
-    fun set(x: Float, y: Float) {
-        this.x = x
-        this.y = y
     }
 }

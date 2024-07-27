@@ -1,28 +1,42 @@
 package core
 
 import core.engine.controller.KeyboardListener
+import core.engine.maths.Vector2i
 import core.engine.media.SourceLoader
-import core.engine.`object`.GameObject
-import core.media.audio.WAVPlayer
-import entities.PlayerEntity
-import java.nio.file.Paths
-import javax.naming.ldap.SortKey
+import core.engine.media.SpriteSplitter
+import core.engine.media.image.ImageAnimations
+import core.nodes.AnimatedSprite
+import core.nodes.AudioStreamPlayer
+import core.nodes.Sprite
+import core.systems.debug.DebugLogic
+import core.systems.node.Node
+import core.systems.node.Node2D
+import core.systems.scene.Scene
 
 class GameLogic (keyboardListener: KeyboardListener) {
 
+
+    init {
+        DebugLogic.isDebug = true
+    }
+
     private var running: Boolean = false
 
-    private val player = PlayerEntity(keyboardListener)
 
-    val gameObjectsList: ArrayList<GameObject> = arrayListOf(
-        player
-    )
 
+    var currentScene = Scene().apply {
+        addNode(
+            Node2D("Node2D").apply {
+
+                addChild(
+                    AudioStreamPlayer(path = "/assets/music/Retro Music - ABMU - ChipWave 01.wav")
+                )
+            }
+        )
+    }
 
     fun update(dt: Float) {
-        for (obj in gameObjectsList) {
-            obj.update(dt)
-        }
+        currentScene.update(dt)
     }
 
 

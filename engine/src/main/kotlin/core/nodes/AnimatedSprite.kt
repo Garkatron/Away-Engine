@@ -1,18 +1,26 @@
-package core.engine.media.image
+package core.nodes
 
+import core.engine.media.image.ImageAnimations
 import core.engine.signal.Signal
+import core.systems.node.Node2D
+import org.w3c.dom.Node
+import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class AnimatedSprite(
+class AnimatedSprite (
+    name: String = "AnimatedSprite",
     private val imageAnimations: ImageAnimations,
     private val defaultAnimation: String,
-) {
+    val twidth: Int, val theight: Int
+) : Node2D(name) {
 
     var animSpeed: Float = imageAnimations.animationSpeed
     var currentAnimation: String = defaultAnimation
     private var currentSpriteIndex: Float = 0f
     var currentImage: BufferedImage? = null
     var isAnimating: Boolean = false
+
+    // Signals
     var onFinished = Signal<String>()
     var onStart = Signal<String>()
 
@@ -21,6 +29,7 @@ class AnimatedSprite(
             throw IllegalArgumentException("Default animation '$defaultAnimation' is not available.")
         }
         currentImage = imageAnimations.getAnimation(defaultAnimation)?.first()
+        animate()
     }
 
     fun setAnimation(name: String) {
@@ -37,11 +46,11 @@ class AnimatedSprite(
         onStart.emit(currentAnimation)
     }
 
-    fun update() {
+    override fun update(dt: Float) {
+        super.update(dt)
         if (isAnimating) {
             val frames = imageAnimations.getAnimation(currentAnimation)
             if (frames.isNullOrEmpty()) return
-
             currentSpriteIndex += animSpeed
             if (currentSpriteIndex >= frames.size) {
                 if (imageAnimations.isLoop) {
@@ -61,5 +70,10 @@ class AnimatedSprite(
 
     fun isImagesLoaded(): Boolean {
         return imageAnimations.getAnimation(currentAnimation)?.isNotEmpty() == true
+    }
+
+    override fun draw(g2: Graphics2D) {
+        super.draw(g2)
+        g2.drawImage(currentImage, globalPosition.x.toInt(), globalPosition.y.toInt(), twidth, theight, null)
     }
 }
