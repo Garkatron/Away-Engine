@@ -24,6 +24,7 @@ class AnimatedSprite(
     // Signals
     var onFinished = Signal<String>()
     var onStart = Signal<String>()
+    var onFrameChange = Signal<Int>()
 
     init {
         if (imageAnimations.getAnimation(defaultAnimation).isNullOrEmpty()) {
@@ -66,6 +67,7 @@ class AnimatedSprite(
             }
 
             currentImage = frames[currentSpriteIndex.toInt()]
+            onFrameChange.emit(currentSpriteIndex.toInt())
             DebugLogic.debugPrintln("Current frame index: $currentSpriteIndex")
 
         }

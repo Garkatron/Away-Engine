@@ -26,10 +26,15 @@ class WAVPlayer(private var clip: Clip) : AudioPlayer() {
 
     override fun play() {
         if (clip.isRunning) {
-            clip.stop()
+            if (!loop)
+                clip.stop()
         }
-        clip.framePosition = 0  // Reinicia el clip antes de reproducir
-        clip.start()
+        if (!loop) {
+            clip.framePosition = 0  // Reinicia el clip antes de reproducir
+            clip.start()
+        } else {
+            clip.loop(Clip.LOOP_CONTINUOUSLY)
+        }
         println("Playing the clip.")
     }
 
@@ -43,6 +48,10 @@ class WAVPlayer(private var clip: Clip) : AudioPlayer() {
             stop()
         }
         clip = newClip
+    }
+
+    fun enableLoop(enable: Boolean) {
+        loop = enable
     }
 
 }

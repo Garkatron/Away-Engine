@@ -5,7 +5,7 @@ import core.media.audio.WAVPlayer
 import core.systems.debug.DebugLogic
 import core.systems.node.Node
 
-class AudioStreamPlayer(name: String = "AudioStreamPlayer", path: String) : Node(name) {
+class AudioStreamPlayer(name: String = "AudioStreamPlayer", path: String, val isLoop: Boolean = true) : Node(name) {
 
     private val wavPlayer = this::class.java.getResourceAsStream(path)?.let {
         DebugLogic.debugPrintln("Loading WAV from path: $path")
@@ -18,7 +18,7 @@ class AudioStreamPlayer(name: String = "AudioStreamPlayer", path: String) : Node
 
     init {
         wavPlayer?.let {
-            it.loop = true
+            it.loop = isLoop
             start()
         } ?: DebugLogic.debugPrintln("Failed to load WAV player.")
     }

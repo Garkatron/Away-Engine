@@ -7,6 +7,7 @@ import core.engine.media.SpriteSplitter
 import core.engine.media.image.ImageAnimations
 import core.maths.Vector2i
 import core.nodes.AnimatedSprite
+import core.nodes.AudioStreamPlayer
 import core.systems.node.Node2D
 import core.systems.debug.DebugLogic
 
@@ -52,6 +53,7 @@ class Player(name: String = "Player", keyboardListener: KeyboardListener) : Node
         val stateMachine = StateMachine()
         stateMachine.addStates(
             "IDLE_UP",
+            "IDLE_DOWN",
             "IDLE_UP_LEFT",
             "IDLE_UP_RIGHT",
             "IDLE_RIGHT",
@@ -72,14 +74,27 @@ class Player(name: String = "Player", keyboardListener: KeyboardListener) : Node
         addChild(stateMachine)
         DebugLogic.debugPrintln("Added StateMachine child to Player.")
 
+        val audioStreamPlayer = AudioStreamPlayer(path = "/assets/player/sfx/on_step/16_human_walk_stone_1.wav", isLoop = true)
+        addChild(
+            audioStreamPlayer
+        )
+
         stateMachine.onStateChange.connect { anim ->
             DebugLogic.debugPrintln("State changed to: $anim")
             (getChildren().find { it is AnimatedSprite } as AnimatedSprite).setAnimation(anim)
+            if (anim.startsWith("WALK")) {
+                audioStreamPlayer.start()
+
+            } else {
+                audioStreamPlayer.stop()
+
+            }
         }
 
         val controller = Controller(keyboardListener, stateMachine = stateMachine)
         addChild(controller)
         DebugLogic.debugPrintln("Added Controller child to Player.")
+
     }
 
 }
