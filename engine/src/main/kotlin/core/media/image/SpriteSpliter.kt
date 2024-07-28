@@ -58,4 +58,19 @@ object SpriteSplitter {
 
         return tiles
     }
+
+    fun extractSpecificTileFromFile(image: BufferedImage, coord: Vector2i, tileWidth: Int, tileHeight: Int): BufferedImage {
+
+        val columns = image.width / tileWidth
+        val rows = image.height / tileHeight
+
+        if (coord.y >= rows || coord.x >= columns) {
+            throw IllegalArgumentException("Coordinates are out of bounds")
+        }
+
+        return image.getSubimage(coord.x * tileWidth, coord.y * tileHeight, tileWidth, tileHeight)
+    }
+
+
+
 }

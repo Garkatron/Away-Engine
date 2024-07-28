@@ -7,12 +7,13 @@ import java.awt.image.BufferedImage
 
 class TileAtlas(val tileWidth: Int, val tileHeight: Int, var atlas: BufferedImage) {
 
-    var tiles = mutableListOf<TileData>()
+    var scale: Int = 1
 
-    fun setTileAt(id: Int, position: Vector2i, collision: Collision = Collision.Square) {
-        tiles.add(
-            TileData(id, position, SpriteSplitter.extractSpecificTilesFromFile(atlas,
-                mutableListOf(position),tileWidth,tileHeight,0,0)[0], collision)
+    var tilesDataMap = mutableListOf<TileData>()
+
+    fun setTileAt(id: Int, atlas_position: Vector2i, collision: Collision = Collision.Square) {
+        tilesDataMap.add(
+            TileData(id, Vector2i(0,0), SpriteSplitter.extractSpecificTileFromFile(atlas,atlas_position,tileWidth,tileHeight), collision)
         )
     }
 

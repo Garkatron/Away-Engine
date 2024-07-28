@@ -7,7 +7,7 @@ import java.awt.image.BufferedImage
 import javax.imageio.ImageIO
 import java.io.IOException
 
-class Sprite(name: String, path: String, val twidth: Int, val theight: Int) : Node2D(name) {
+class Sprite(name: String = "Sprite2D", path: String, val twidth: Int, val theight: Int) : Node2D(name) {
 
     lateinit var image: BufferedImage
 
