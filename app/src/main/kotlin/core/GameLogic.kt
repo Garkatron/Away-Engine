@@ -15,11 +15,6 @@ import nodes.Player
 
 class GameLogic (keyboardListener: KeyboardListener) {
 
-
-    init {
-        DebugLogic.isDebug = true
-    }
-
     private var running: Boolean = false
 
 
