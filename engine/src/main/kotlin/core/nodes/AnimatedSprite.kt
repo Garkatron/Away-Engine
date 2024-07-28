@@ -1,13 +1,14 @@
 package core.nodes
 
+import core.engine.maths.Vector2
 import core.engine.media.image.ImageAnimations
 import core.engine.signal.Signal
+import core.systems.debug.DebugLogic
 import core.systems.node.Node2D
-import org.w3c.dom.Node
 import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
-class AnimatedSprite (
+class AnimatedSprite(
     name: String = "AnimatedSprite",
     private val imageAnimations: ImageAnimations,
     private val defaultAnimation: String,
@@ -65,6 +66,8 @@ class AnimatedSprite (
             }
 
             currentImage = frames[currentSpriteIndex.toInt()]
+            DebugLogic.debugPrintln("Current frame index: $currentSpriteIndex")
+
         }
     }
 
@@ -74,6 +77,7 @@ class AnimatedSprite (
 
     override fun draw(g2: Graphics2D) {
         super.draw(g2)
+        DebugLogic.debugPrintln("Drawing sprite at: ${globalPosition.x}, ${globalPosition.y}")
         g2.drawImage(currentImage, globalPosition.x.toInt(), globalPosition.y.toInt(), twidth, theight, null)
     }
 }

@@ -4,13 +4,14 @@ import core.engine.controller.KeyboardListener
 import core.engine.maths.Vector2
 import core.systems.node.Node
 import core.systems.node.Node2D
+import core.systems.debug.DebugLogic
 import java.awt.event.KeyEvent
 
-class Controller (
+class Controller(
     keyboardListener: KeyboardListener,
     private val stateMachine: StateMachine,
-    name: String ="Controller"
-) : Node() {
+    name: String = "Controller"
+) : Node(name) {
 
     val keysPressed = mutableSetOf<Int>()
 
@@ -30,22 +31,25 @@ class Controller (
             keysPressed.remove(keyCode)
             handleKeyRelease(keyCode)
         }
-        // No need to handle keyPressed in this context
+        DebugLogic.debugPrintln("Controller initialized.")
     }
 
     private fun handleKeyPress(keyCode: Int) {
+        DebugLogic.debugPrintln("Key pressed: $keyCode")
     }
 
     private fun handleKeyRelease(keyCode: Int) {
+        DebugLogic.debugPrintln("Key released: $keyCode")
         if (keysPressed.isEmpty()) {
-            stateMachine.changeState("IDLE_"+stateMachine.getCurrentState().substringAfter("_"))
+            val newState = "IDLE_" + stateMachine.getCurrentState().substringAfter("_")
+            stateMachine.changeState(newState)
+            DebugLogic.debugPrintln("State changed to: $newState")
         }
     }
 
-    override fun update(deltaTime: Float) {
-        val movementSpeed = 200f * deltaTime
+    override fun update(dt: Float) {
+        val movementSpeed = 200f * dt
         val movementVector = Vector2(0f, 0f)
-
         val pressedDirections = directionMappings.filter { keysPressed.contains(it.key) }
             .map { it.value }
             .sortedBy {
@@ -59,8 +63,9 @@ class Controller (
             }
 
         val baseState = if (pressedDirections.isNotEmpty()) "WALK_${pressedDirections.joinToString("_")}" else "IDLE"
-
         stateMachine.changeState(baseState)
+
+        DebugLogic.debugPrintln("Base state: $baseState")
 
         movementVector.set(
             when {
@@ -77,12 +82,18 @@ class Controller (
             }
         )
 
-        if (movementVector.magnitude() != 0f) { // Evita la normalización de un vector cero
+        if (movementVector.magnitude() != 0f) {
             movementVector.normalize()
         }
 
-        (parent as Node2D).position += movementVector
+        DebugLogic.debugPrintln("Movement vector: $movementVector")
+
+        val player = parent as? Node2D
+        if (player != null) {
+            player.position += movementVector
+            DebugLogic.debugPrintln("New position: ${player.globalPosition}")
+        } else {
+            DebugLogic.debugPrintln("Parent is not a Node2D, position update failed.")
+        }
     }
-
-
 }

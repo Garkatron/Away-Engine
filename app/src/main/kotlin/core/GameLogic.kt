@@ -1,7 +1,6 @@
 package core
 
 import core.engine.controller.KeyboardListener
-import core.engine.maths.Vector2i
 import core.engine.media.SourceLoader
 import core.engine.media.SpriteSplitter
 import core.engine.media.image.ImageAnimations
@@ -12,6 +11,7 @@ import core.systems.debug.DebugLogic
 import core.systems.node.Node
 import core.systems.node.Node2D
 import core.systems.scene.Scene
+import nodes.Player
 
 class GameLogic (keyboardListener: KeyboardListener) {
 
@@ -23,14 +23,13 @@ class GameLogic (keyboardListener: KeyboardListener) {
     private var running: Boolean = false
 
 
-
     var currentScene = Scene().apply {
         addNode(
             Node2D("Node2D").apply {
-
-                addChild(
-                    AudioStreamPlayer(path = "/assets/music/Retro Music - ABMU - ChipWave 01.wav")
+                addChildren(
+                    Player(keyboardListener = keyboardListener),
                 )
+
             }
         )
     }

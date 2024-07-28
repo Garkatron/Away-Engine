@@ -23,6 +23,13 @@ class StateMachine (
         states.add(key)
     }
 
+    fun addStates(vararg keys: String) {
+        for (arg in keys) {
+            if (states.contains(arg)) return
+            states.add(arg)
+        }
+    }
+
     fun changeState(newState: String) {
         if (states.contains(newState)) {
             if (currentState!=newState){
@@ -36,7 +43,7 @@ class StateMachine (
         return currentState
     }
 
-    override fun update(deltaTime: Float) {
+    override fun update(dt: Float) {
 
     }
 }

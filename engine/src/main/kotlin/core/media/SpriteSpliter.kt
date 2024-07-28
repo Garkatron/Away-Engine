@@ -1,6 +1,6 @@
 package core.engine.media
 
-import core.engine.maths.Vector2i
+import core.maths.Vector2i
 import java.awt.image.BufferedImage
 
 object SpriteSplitter {
