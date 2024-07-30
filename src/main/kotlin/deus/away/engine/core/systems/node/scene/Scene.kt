@@ -1,11 +1,11 @@
-package deus.away.engine.core.systems.scene
+package deus.away.engine.core.systems.node.scene
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.interfaces.IDrawable
 import deus.away.engine.core.interfaces.IDrawableNode
 import deus.away.engine.core.interfaces.IUpdatable
 import deus.away.engine.core.systems.node.Node
-import deus.away.engine.core.systems.saving.Keep
+import deus.away.engine.core.systems.node.saving.Keep
 
 class Scene(@Keep("name") var name: String = "Scene") : IDrawable, IUpdatable {
 

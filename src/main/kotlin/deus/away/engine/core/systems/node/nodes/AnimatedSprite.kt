@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.media.image.ImageAnimations
 import deus.away.engine.core.systems.debug.DebugLogic
 import deus.away.engine.core.systems.node.Node2D
-import deus.away.engine.core.systems.saving.Keep
+import deus.away.engine.core.systems.node.saving.Keep
 import deus.away.engine.core.systems.signal.Signal
 
 class AnimatedSprite(

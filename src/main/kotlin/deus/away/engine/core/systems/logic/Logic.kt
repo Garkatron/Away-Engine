@@ -1,26 +1,21 @@
 package deus.away.engine.core.systems.logic
 
-import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.InputAdapter
 import deus.away.engine.core.systems.controller.KeyboardListener
-import deus.away.engine.core.systems.saving.SaveManager
-import deus.away.engine.core.systems.scene.Scene
-import deus.away.engine.core.systems.scene.SceneManager
+import deus.away.engine.core.systems.node.saving.SaveManager
+import deus.away.engine.core.systems.node.scene.SceneManager
 
 class Logic(
     private val keyboardListener: KeyboardListener,
     private val sceneManager: SceneManager
-) : ApplicationListener {
-
+) {
     private val saveManager = SaveManager()
+    private val spriteBatch = SpriteBatch()
     private var running: Boolean = false
 
     init {
-        // Setup your scene or other initial configurations here if needed
-    }
-
-    override fun create() {
         Gdx.input.inputProcessor = object : InputAdapter() {
             override fun keyDown(keycode: Int): Boolean {
                 keyboardListener.keyDown.emit(keycode)
@@ -32,36 +27,49 @@ class Logic(
                 return true
             }
         }
+        println("Logic initialized.")
     }
 
-    override fun render() {
+    fun create() {
+        println("Logic created.")
+    }
+
+    fun render() {
         if (running) {
             val deltaTime = Gdx.graphics.deltaTime
+            println("Logic render() called with deltaTime: $deltaTime")
             update(deltaTime)
+            renderScene()
+        } else {
+            println("Logic is not running. Render skipped.")
         }
     }
 
-    override fun resize(width: Int, height: Int) {
+    fun resize(width: Int, height: Int) {
         // Handle screen resizing if necessary
     }
 
-    override fun pause() {
+    fun pause() {
         // Handle game pause state if needed
     }
 
-    override fun resume() {
+    fun resume() {
         // Handle game resume state if needed
     }
 
-    override fun dispose() {
+    fun dispose() {
+        println("Logic dispose() called")
         save()
-        // Dispose of resources here
+        sceneManager.currentScene?.dispose() // Ensure currentScene is not null
+
+        spriteBatch.dispose()
     }
 
     fun start() {
         if (!running) {
             running = true
-            Gdx.app.postRunnable { create() }
+            println("Logic started")
+            create() // Directly call create() instead of postRunnable
         }
     }
 
@@ -72,11 +80,22 @@ class Logic(
     }
 
     fun save() {
-        sceneManager.currentScene?.let { saveManager.printScene(it) }
-        sceneManager.currentScene?.let { saveManager.saveScene(it) }
+        sceneManager.currentScene?.let {
+            saveManager.saveScene(it)
+        }
     }
 
     private fun update(dt: Float) {
-        sceneManager.currentScene?.update(dt)
+        println("Logic update() called with deltaTime: $dt")
+        sceneManager.currentScene?.update(dt) ?: println("No current scene to update")
+    }
+
+    private fun renderScene() {
+        println("Logic renderScene() called")
+        sceneManager.currentScene?.let { scene ->
+            spriteBatch.begin()
+            scene.draw(spriteBatch)
+            spriteBatch.end()
+        } ?: println("No current scene to render")
     }
 }

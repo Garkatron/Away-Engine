@@ -1,6 +1,6 @@
-package deus.away.engine.core.systems.saving
+package deus.away.engine.core.systems.node.saving
 import deus.away.engine.core.systems.node.Node
-import deus.away.engine.core.systems.scene.Scene
+import deus.away.engine.core.systems.node.scene.Scene
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberProperties
 import kotlin.reflect.jvm.isAccessible

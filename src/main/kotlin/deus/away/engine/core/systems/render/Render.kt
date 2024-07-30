@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.systems.controller.KeyboardListener
 import deus.away.engine.core.interfaces.IDrawable
 import deus.away.engine.core.systems.debug.DebugLogic
-import deus.away.engine.core.systems.scene.Scene
+import deus.away.engine.core.systems.node.scene.Scene
 import java.awt.Color
 import java.awt.Graphics2D
 

@@ -3,7 +3,7 @@ package deus.away.engine.core.systems.node
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.interfaces.IDrawableNode
 import deus.away.engine.core.maths.Vector2
-import deus.away.engine.core.systems.saving.Keep
+import deus.away.engine.core.systems.node.saving.Keep
 
 open class Node2D(name: String = "Node2D") : Node(name), IDrawableNode {
 

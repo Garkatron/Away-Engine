@@ -1,4 +1,4 @@
-package deus.away.engine.core.systems.scene
+package deus.away.engine.core.systems.node.scene
 
 class SceneManager(vararg initScenes: Scene) {
 
