@@ -1,0 +1,56 @@
+package deus.away.engine.core.systems.node
+
+import deus.away.engine.core.interfaces.IDrawable
+import deus.away.engine.core.maths.Vector2
+import deus.away.engine.core.systems.saving.Keep
+import java.awt.Graphics2D
+
+open class Node2D(name: String = "Node2D") : Node(name), IDrawable {
+
+    @Keep("position")
+    var position: Vector2 = Vector2(0f, 0f)
+        set(value) {
+            field = value
+            updateGlobalPosition()
+        }
+
+    @Keep("globalPosition")
+    var globalPosition: Vector2 = Vector2(0f, 0f)
+        private set
+
+    fun updateGlobalPosition() {
+        globalPosition = if (parent is Node2D) {
+            (parent as Node2D).globalPosition + position
+        } else {
+            position
+        }
+        // Update the global position of all children
+        for (child in getChildren()) {
+            if (child is Node2D) {
+                child.updateGlobalPosition()
+            }
+        }
+    }
+
+    override fun addChild(node: Node) {
+        super.addChild(node)
+        if (node is Node2D) {
+            node.updateGlobalPosition()
+        }
+    }
+
+    override fun removeChild(node: Node) {
+        super.removeChild(node)
+        // No need to update position here unless the node's global position
+        // is used after removal, which typically isn't the case.
+    }
+
+    override fun draw(g2: Graphics2D) {
+        // Draw current node's visuals here if needed
+        for (node in getChildren()) {
+            if (node is IDrawable) {
+                node.draw(g2)
+            }
+        }
+    }
+}
