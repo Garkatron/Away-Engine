@@ -7,7 +7,7 @@ object DesktopLauncher {
     @JvmStatic
     fun main(arg: Array<String>) {
         val config = Lwjgl3ApplicationConfiguration().apply {
-            setTitle("My Game")
+            setTitle("AwayEngine")
             setWindowedMode(800, 600) // Configura el tamaño inicial de la ventana
             setResizable(true) // Permite cambiar el tamaño de la ventana
             useVsync(true) // Sincroniza con el refresco de la pantalla

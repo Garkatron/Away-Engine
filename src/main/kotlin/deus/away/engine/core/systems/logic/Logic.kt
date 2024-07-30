@@ -2,21 +2,18 @@ package deus.away.engine.core.systems.logic
 
 import com.badlogic.gdx.ApplicationListener
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.InputAdapter
-import deus.away.engine.core.interfaces.IDrawable
-import deus.away.engine.core.interfaces.IDrawableNode
 import deus.away.engine.core.systems.controller.KeyboardListener
 import deus.away.engine.core.systems.saving.SaveManager
 import deus.away.engine.core.systems.scene.Scene
+import deus.away.engine.core.systems.scene.SceneManager
 
 class Logic(
     private val keyboardListener: KeyboardListener,
-    private val currentScene: Scene
+    private val sceneManager: SceneManager
 ) : ApplicationListener {
 
     private val saveManager = SaveManager()
-    private val spriteBatch = SpriteBatch()
     private var running: Boolean = false
 
     init {
@@ -41,7 +38,6 @@ class Logic(
         if (running) {
             val deltaTime = Gdx.graphics.deltaTime
             update(deltaTime)
-            currentScene.draw(spriteBatch)
         }
     }
 
@@ -59,8 +55,7 @@ class Logic(
 
     override fun dispose() {
         save()
-        spriteBatch.dispose()
-        currentScene.dispose()
+        // Dispose of resources here
     }
 
     fun start() {
@@ -77,11 +72,11 @@ class Logic(
     }
 
     fun save() {
-        saveManager.printScene(currentScene)
-        saveManager.saveScene(currentScene)
+        sceneManager.currentScene?.let { saveManager.printScene(it) }
+        sceneManager.currentScene?.let { saveManager.saveScene(it) }
     }
 
     private fun update(dt: Float) {
-        currentScene.update(dt)
+        sceneManager.currentScene?.update(dt)
     }
 }

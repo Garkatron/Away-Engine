@@ -1,4 +1,4 @@
-package deus.away.engine.core.nodes
+package deus.away.engine.core.systems.node.nodes
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
@@ -7,7 +7,6 @@ import deus.away.engine.core.systems.debug.DebugLogic
 import deus.away.engine.core.systems.node.Node2D
 import deus.away.engine.core.systems.saving.Keep
 import deus.away.engine.core.systems.signal.Signal
-import java.awt.image.BufferedImage
 
 class AnimatedSprite(
     name: String = "AnimatedSprite",

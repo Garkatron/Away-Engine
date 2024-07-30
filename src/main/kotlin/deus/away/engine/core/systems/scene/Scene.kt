@@ -7,7 +7,7 @@ import deus.away.engine.core.interfaces.IUpdatable
 import deus.away.engine.core.systems.node.Node
 import deus.away.engine.core.systems.saving.Keep
 
-class Scene(@Keep("name") val name: String = "Scene") : IDrawable, IUpdatable {
+class Scene(@Keep("name") var name: String = "Scene") : IDrawable, IUpdatable {
 
     val nodes: MutableList<Node> = mutableListOf()
 
@@ -21,6 +21,7 @@ class Scene(@Keep("name") val name: String = "Scene") : IDrawable, IUpdatable {
     }
 
     override fun update(dt: Float) {
+
         for (node in nodes) {
             node.update(dt)
         }

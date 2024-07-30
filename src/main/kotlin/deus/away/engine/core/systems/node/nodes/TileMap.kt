@@ -1,4 +1,4 @@
-package deus.away.engine.core.nodes
+package deus.away.engine.core.systems.node.nodes
 
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.SpriteBatch

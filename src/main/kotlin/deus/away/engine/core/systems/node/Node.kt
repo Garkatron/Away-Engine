@@ -59,7 +59,6 @@ open class Node(
             try {
                 if (script.isNotEmpty())
                     ScriptManager.callMethod("update", dt)
-
             } catch (e: ScriptException) {
                 println("Script execution failed: ${e.message}")
                 e.printStackTrace()

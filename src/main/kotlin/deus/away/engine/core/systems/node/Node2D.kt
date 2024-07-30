@@ -1,7 +1,6 @@
 package deus.away.engine.core.systems.node
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
-import deus.away.engine.core.interfaces.IDrawable
 import deus.away.engine.core.interfaces.IDrawableNode
 import deus.away.engine.core.maths.Vector2
 import deus.away.engine.core.systems.saving.Keep

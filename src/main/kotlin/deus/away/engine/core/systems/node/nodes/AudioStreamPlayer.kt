@@ -1,4 +1,4 @@
-package deus.away.engine.core.nodes
+package deus.away.engine.core.systems.node.nodes
 
 import deus.away.engine.core.media.SourceLoader
 import deus.away.engine.core.media.audio.WAVPlayer

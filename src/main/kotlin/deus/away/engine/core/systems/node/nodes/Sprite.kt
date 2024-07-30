@@ -1,4 +1,4 @@
-package deus.away.engine.core.nodes
+package deus.away.engine.core.systems.node.nodes
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Texture
@@ -19,6 +19,7 @@ class Sprite(
         loadTexture(path)
     }
 
+
     private fun loadTexture(path: String) {
         try {
             texture = Texture(Gdx.files.internal("assets/player.png"))
@@ -30,7 +31,7 @@ class Sprite(
 
     override fun draw(batch: SpriteBatch) {
         if (::texture.isInitialized) {
-            batch.draw(texture, globalPosition.x, globalPosition.y, twidth.toFloat(), theight.toFloat())
+            batch.draw(texture, position.x, position.y, twidth.toFloat(), theight.toFloat())
         } else {
             println("Texture not loaded")
         }
