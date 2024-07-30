@@ -1,5 +1,8 @@
 package deus.away.engine.core.media
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.utils.GdxRuntimeException
 import java.awt.image.BufferedImage
 import java.io.IOException
 import java.io.InputStream
@@ -8,16 +11,16 @@ import javax.sound.sampled.*
 
 object SourceLoader {
 
-    fun loadImageResource(path: String): BufferedImage? {
+    fun loadImageResource(path: String): Texture? {
         return try {
-            val resourceStream: InputStream? = this::class.java.getResourceAsStream(path)
-            if (resourceStream != null) {
-                ImageIO.read(resourceStream)
+            val fileHandle = Gdx.files.internal(path)
+            if (fileHandle.exists()) {
+                Texture(fileHandle)
             } else {
                 println("Resource not found: $path")
                 null
             }
-        } catch (e: IOException) {
+        } catch (e: GdxRuntimeException) {
             println("Error reading image from path '$path': ${e.message}")
             null
         }

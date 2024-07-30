@@ -1,11 +1,12 @@
 package deus.away.engine.core.nodes
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.media.image.ImageAnimations
 import deus.away.engine.core.systems.debug.DebugLogic
 import deus.away.engine.core.systems.node.Node2D
 import deus.away.engine.core.systems.saving.Keep
 import deus.away.engine.core.systems.signal.Signal
-import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 class AnimatedSprite(
@@ -25,7 +26,7 @@ class AnimatedSprite(
 
     @Keep("currentSpriteIndex")
     private var currentSpriteIndex: Float = 0f
-    var currentImage: BufferedImage? = null
+    var currentImage: Texture? = null
 
     @Keep("isAnimating")
     var isAnimating: Boolean = false
@@ -86,9 +87,12 @@ class AnimatedSprite(
         return imageAnimations.getAnimation(currentAnimation)?.isNotEmpty() == true
     }
 
-    override fun draw(g2: Graphics2D) {
-        super.draw(g2)
-        DebugLogic.debugPrintln("Drawing sprite at: ${globalPosition.x}, ${globalPosition.y}")
-        g2.drawImage(currentImage, globalPosition.x.toInt(), globalPosition.y.toInt(), twidth, theight, null)
+    override fun draw(batch: SpriteBatch) {
+        super.draw(batch)
+        if (currentImage!=null) {
+            batch.draw(currentImage, globalPosition.x, globalPosition.y, twidth.toFloat(), theight.toFloat())
+        } else {
+            println("Texture not loaded")
+        }
     }
 }

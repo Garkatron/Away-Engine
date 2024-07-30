@@ -1,17 +1,18 @@
 package deus.away.engine.core.media.image
 
+import com.badlogic.gdx.graphics.Texture
 import deus.away.engine.core.media.SourceLoader
 import java.awt.image.BufferedImage
 import java.io.IOException
 
 data class ImageAnimations(
-    private val animations: MutableMap<String, MutableList<BufferedImage>> = mutableMapOf(),
+    private val animations: MutableMap<String, MutableList<Texture>> = mutableMapOf(),
     val animationSpeed: Float,
     val isLoop: Boolean
 ) {
 
     fun addAnimation(name: String, paths: Array<String>) {
-        val images = mutableListOf<BufferedImage>()
+        val images = mutableListOf<Texture>()
         for (path in paths) {
             try {
                 val image =
@@ -24,7 +25,7 @@ data class ImageAnimations(
         animations[name] = images
     }
 
-    fun addAnimationFromCanvas(name: String, images: MutableList<BufferedImage>) {
+    fun addAnimationFromCanvas(name: String, images: MutableList<Texture>) {
         animations[name] = images
     }
 
@@ -32,7 +33,7 @@ data class ImageAnimations(
         animations.remove(name)
     }
 
-    fun getAnimation(name: String): List<BufferedImage>? {
+    fun getAnimation(name: String): List<Texture>? {
         return animations[name]
     }
 

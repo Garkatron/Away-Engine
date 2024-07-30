@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.0.0"
 }
 
 object Deps {
@@ -11,7 +11,7 @@ object Deps {
 }
 
 group = "deus.away.engine"
-version = "1.0-SNAPSHOT"
+version = "0.2.4"
 
 repositories {
     mavenCentral()
@@ -20,6 +20,9 @@ repositories {
 dependencies {
     implementation(kotlin("stdlib"))
     implementation(kotlin("reflect"))
+    implementation("com.badlogicgames.gdx:gdx:1.12.1") // LibGDX core
+    implementation ("com.badlogicgames.gdx:gdx-backend-lwjgl3:1.12.1")
+    implementation ("com.badlogicgames.gdx:gdx-platform:1.12.1:natives-desktop")
     implementation("org.jetbrains.kotlin:kotlin-scripting-dependencies")
     implementation("org.jetbrains.kotlin:kotlin-scripting-dependencies-maven")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")

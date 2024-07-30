@@ -1,16 +1,17 @@
 package deus.away.engine.core.systems.render
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Screen
+import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.systems.controller.KeyboardListener
 import deus.away.engine.core.interfaces.IDrawable
 import deus.away.engine.core.systems.debug.DebugLogic
 import deus.away.engine.core.systems.scene.Scene
 import java.awt.Color
-import javax.swing.JPanel
-import java.awt.Dimension
-import java.awt.Graphics
 import java.awt.Graphics2D
 
-class Render(val fps: Int) : JPanel() {
+class Render(val fps: Int) : Screen {
 
     companion object {
         private const val TILE_SIZE: Int = 16
@@ -23,27 +24,23 @@ class Render(val fps: Int) : JPanel() {
     }
 
     var currentScene: Scene? = null
+    private val batch = SpriteBatch()
 
 
     init {
-        preferredSize = Dimension(SCREEN_WIDTH, SCREEN_HEIGHT)
-        background = Color.black
-        isDoubleBuffered = true
-        isFocusable = true
-        requestFocus()
-        requestFocusInWindow()
-
+        Gdx.graphics.setWindowedMode(SCREEN_WIDTH, SCREEN_HEIGHT)
         DebugLogic.isDebug = false
     }
 
-    override fun paintComponent(g: Graphics) {
-        super.paintComponent(g)
-        val g2 = g as Graphics2D
-        clear(g2)
-        render(g2)
+    override fun show() {
+
     }
 
-    private fun render(g2: Graphics2D) {
+    override fun render(p0: Float) {
+        Gdx.gl.glClearColor(0f,0f, 0F,1f)
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
+
+        batch.begin()
         currentScene?.let {
             if (it.nodes.isEmpty()) {
                 DebugLogic.debugPrintln("No nodes to render")
@@ -52,7 +49,7 @@ class Render(val fps: Int) : JPanel() {
                 DebugLogic.debugPrintln("Rendering nodes:")
                 for (node in it.nodes) {
                     if (node is IDrawable) {
-                        node.draw(g2)
+                        node.draw(batch)
                         DebugLogic.debugPrintln("Drawing node: ${node.javaClass.name}")
                     } else {
                         DebugLogic.debugPrintln("Node is not drawable: ${node.javaClass.name}")
@@ -60,14 +57,16 @@ class Render(val fps: Int) : JPanel() {
                 }
             }
         }
+        batch.end()
+
     }
 
-    private fun clear(g2: Graphics2D) {
-        g2.color = Color.black
-        g2.fillRect(0, 0, width, height)
-    }
 
-    fun addKeyboardListener(k: KeyboardListener) {
-        addKeyListener(k)
+    override fun resize(width: Int, height: Int) {}
+    override fun pause() {}
+    override fun resume() {}
+    override fun hide() {}
+    override fun dispose() {
+        batch.dispose()
     }
 }

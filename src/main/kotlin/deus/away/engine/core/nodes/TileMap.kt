@@ -1,14 +1,15 @@
 package deus.away.engine.core.nodes
 
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.maths.Vector2i
 import deus.away.engine.core.systems.node.Node2D
 import deus.away.engine.core.systems.tiled.TileAtlas
-import java.awt.Graphics2D
 import java.awt.image.BufferedImage
 
 class TileMap(name: String, var atlas: TileAtlas) : Node2D(name) {
 
-    private val tiles = mutableMapOf<Vector2i, BufferedImage>()
+    private val tiles = mutableMapOf<Vector2i, Texture>()
 
     fun setCell(id: Int, position: Vector2i) {
         val tile = atlas.tilesDataMap.find { it.id == id }
@@ -17,16 +18,15 @@ class TileMap(name: String, var atlas: TileAtlas) : Node2D(name) {
         }
     }
 
-    override fun draw(g2: Graphics2D) {
-        super.draw(g2)
+    override fun draw(batch: SpriteBatch) {
+        super.draw(batch)
         tiles.forEach { (position, image) ->
-            g2.drawImage(
+            batch.draw(
                 image,
-                position.x * atlas.tileWidth * atlas.scale,
-                position.y * atlas.tileHeight * atlas.scale,
-                atlas.tileWidth * atlas.scale,
-                atlas.tileHeight * atlas.scale,
-                null
+                (position.x * atlas.tileWidth * atlas.scale).toFloat(),
+                (position.y * atlas.tileHeight * atlas.scale).toFloat(),
+                (atlas.tileWidth * atlas.scale).toFloat(),
+                (atlas.tileHeight * atlas.scale).toFloat(),
             )
         }
     }

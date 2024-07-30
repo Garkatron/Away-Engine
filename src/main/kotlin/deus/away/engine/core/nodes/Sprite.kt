@@ -1,11 +1,10 @@
 package deus.away.engine.core.nodes
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.systems.node.Node2D
 import deus.away.engine.core.systems.saving.Keep
-import java.awt.Graphics2D
-import java.awt.image.BufferedImage
-import java.io.IOException
-import javax.imageio.ImageIO
 
 class Sprite(
     name: String = "Sprite2D",
@@ -14,32 +13,32 @@ class Sprite(
     @Keep("theight") val theight: Int
 ) : Node2D(name) {
 
-    lateinit var image: BufferedImage
+    private lateinit var texture: Texture
 
     init {
-        loadImage(path)
+        loadTexture(path)
     }
 
-    private fun loadImage(path: String) {
+    private fun loadTexture(path: String) {
         try {
-            val resource = this::class.java.getResourceAsStream(path)
-                ?: throw IllegalArgumentException("Path '$path' does not exist.")
-            image = ImageIO.read(resource)
-                ?: throw IOException("Failed to read image from path '$path'.")
-        } catch (e: IllegalArgumentException) {
-            println(e.message)
-            // Handle the case where the path does not exist
-        } catch (e: IOException) {
-            println(e.message)
-            // Handle the case where reading the image fails
+            texture = Texture(Gdx.files.internal("assets/player.png"))
+        } catch (e: Exception) {
+            println("Failed to load texture from path '$path': ${e.message}")
+            // Handle the case where loading the texture fails
         }
     }
 
-    override fun draw(g2: Graphics2D) {
-        if (this::image.isInitialized) {
-            g2.drawImage(image, globalPosition.x.toInt(), globalPosition.y.toInt(), twidth, theight, null)
+    override fun draw(batch: SpriteBatch) {
+        if (::texture.isInitialized) {
+            batch.draw(texture, globalPosition.x, globalPosition.y, twidth.toFloat(), theight.toFloat())
         } else {
-            println("Image not loaded")
+            println("Texture not loaded")
+        }
+    }
+
+    override fun dispose() {
+        if (::texture.isInitialized) {
+            texture.dispose()
         }
     }
 }

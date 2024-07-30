@@ -1,11 +1,12 @@
 package deus.away.engine.core.systems.node
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.interfaces.IDrawable
+import deus.away.engine.core.interfaces.IDrawableNode
 import deus.away.engine.core.maths.Vector2
 import deus.away.engine.core.systems.saving.Keep
-import java.awt.Graphics2D
 
-open class Node2D(name: String = "Node2D") : Node(name), IDrawable {
+open class Node2D(name: String = "Node2D") : Node(name), IDrawableNode {
 
     @Keep("position")
     var position: Vector2 = Vector2(0f, 0f)
@@ -45,12 +46,27 @@ open class Node2D(name: String = "Node2D") : Node(name), IDrawable {
         // is used after removal, which typically isn't the case.
     }
 
-    override fun draw(g2: Graphics2D) {
+    override fun draw(batch: SpriteBatch) {
         // Draw current node's visuals here if needed
         for (node in getChildren()) {
-            if (node is IDrawable) {
-                node.draw(g2)
+            if (node is IDrawableNode) {
+                node.draw(batch)
             }
         }
     }
+
+    override fun dispose() {
+
+    }
+
+    override fun disposeChildren() {
+        getChildren().forEach { n ->
+            if (n is IDrawableNode) {
+                n.disposeChildren()
+                n.dispose()
+            }
+
+        }
+    }
+
 }

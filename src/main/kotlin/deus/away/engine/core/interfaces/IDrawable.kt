@@ -1,7 +1,8 @@
 package deus.away.engine.core.interfaces
 
-import java.awt.Graphics2D
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 
 interface IDrawable {
-    fun draw(g2: Graphics2D)
+    fun draw(batch: SpriteBatch)
+    fun dispose()
 }

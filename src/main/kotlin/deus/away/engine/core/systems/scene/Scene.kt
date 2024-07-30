@@ -1,20 +1,21 @@
 package deus.away.engine.core.systems.scene
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import deus.away.engine.core.interfaces.IDrawable
+import deus.away.engine.core.interfaces.IDrawableNode
 import deus.away.engine.core.interfaces.IUpdatable
 import deus.away.engine.core.systems.node.Node
 import deus.away.engine.core.systems.saving.Keep
-import java.awt.Graphics2D
 
 class Scene(@Keep("name") val name: String = "Scene") : IDrawable, IUpdatable {
 
     val nodes: MutableList<Node> = mutableListOf()
 
 
-    override fun draw(g2: Graphics2D) {
+    override fun draw(batch: SpriteBatch) {
         for (node in nodes) {
-            if (node is IDrawable) {
-                node.draw(g2)
+            if (node is IDrawableNode) {
+                node.draw(batch)
             }
         }
     }
@@ -28,4 +29,14 @@ class Scene(@Keep("name") val name: String = "Scene") : IDrawable, IUpdatable {
     fun addNode(node: Node) {
         nodes.add(node)
     }
+
+    override fun dispose() {
+        nodes.forEach { n->
+            if (n is IDrawableNode) {
+                n.disposeChildren()
+                n.dispose()
+            }
+        }
+    }
+
 }
